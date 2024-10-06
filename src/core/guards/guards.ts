@@ -32,4 +32,18 @@ export class Guards implements IGuards {
     if (argument == null || !isDate(String(argument)))
       throw new DomainException(`${argumentName} está em um formato inválido.`);
   }
+
+  static ensureMinWords(
+    minWords: number,
+    argument: string,
+    argumentName: string,
+  ): GuardResponse {
+    if (
+      typeof argument !== 'string' ||
+      !(argument.split(/\s+/).length >= minWords)
+    )
+      throw new DomainException(
+        `${argumentName} not satisfies a min words [${minWords} min words].`,
+      );
+  }
 }

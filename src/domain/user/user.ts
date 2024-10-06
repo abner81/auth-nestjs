@@ -1,17 +1,24 @@
 import { Entity } from 'core/domain/entity';
-import { DateValueObject } from 'domain/date-value-object';
-import { EntityId, EntityIdProps } from 'domain/entity-id';
 import { Email, EmailProps, Password, PasswordProps } from './value-objects';
+import {
+  DateValueObject,
+  EntityId,
+  EntityIdProps,
+  Name,
+  NameProps,
+} from 'domain/shared/value-objects';
 
 export type UserProps = EmailProps &
   EntityIdProps &
-  PasswordProps & { createdAt: Date };
+  PasswordProps &
+  NameProps & { createdAt: Date };
 
 type UserState = {
   email: Email;
   createdAt: DateValueObject;
   id: EntityId;
   password: Password | null;
+  name: Name;
 };
 
 export class User extends Entity<UserProps, UserState> {
@@ -25,6 +32,10 @@ export class User extends Entity<UserProps, UserState> {
 
   get id() {
     return this.state.id;
+  }
+
+  get name(): Name {
+    return this.state.name;
   }
 
   get password(): Password | null {
@@ -51,8 +62,9 @@ export class User extends Entity<UserProps, UserState> {
     const id = new EntityId(props);
     const createdAt = new DateValueObject({ date: props.createdAt });
     const password = new Password(props);
+    const name = new Name(props);
 
-    return { email, id, createdAt, password };
+    return { email, id, createdAt, password, name };
   }
 
   export(): Required<UserProps> {
@@ -61,6 +73,7 @@ export class User extends Entity<UserProps, UserState> {
       createdAt: this.state.createdAt.value,
       ...this.state.id.export(),
       ...this.state.password.export(),
+      ...this.state.name.export(),
     };
   }
 }
