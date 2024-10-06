@@ -1,4 +1,6 @@
-export class ImplementationException extends Error {
+import { Exception } from './exception';
+
+export class ImplementationException extends Exception {
   constructor(message?: string) {
     super(message);
   }
