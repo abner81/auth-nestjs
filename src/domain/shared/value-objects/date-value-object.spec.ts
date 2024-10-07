@@ -11,6 +11,7 @@ describe('Date Value Object', () => {
     expect(isDate(sut.value)).toBeTruthy();
     expect(isDate(sut3.value)).toBeTruthy();
     expect(sut).toEqual(sut2);
+    expect(sut.export()).toEqual({ date: sut.value });
   });
 
   it('should throw error if not pass correct argument', () => {

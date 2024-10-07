@@ -10,6 +10,7 @@ describe('Name Value Object', () => {
     expect(sut.firstName).toBe('John');
     expect(sut.lastName).toBe('Doe');
     expect(sut2.value).toBe('Alef Barreto');
+    expect(sut.export()).toEqual({ name: sut.value });
   });
 
   it('should ensure min first and last name', () => {

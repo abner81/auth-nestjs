@@ -9,6 +9,7 @@ describe('EntityId Value Object', () => {
 
     expect(isUUID(sut.value)).toBeTruthy();
     expect(sut).toEqual(sut2);
+    expect(sut.export()).toEqual({ id: sut.value });
   });
 
   it('should throw error if pass no uuid with params', () => {
