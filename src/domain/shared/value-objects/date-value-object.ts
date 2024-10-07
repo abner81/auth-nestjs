@@ -1,5 +1,8 @@
+import { DomainException } from 'core/domain/exceptions';
 import { ValueObject } from 'core/domain/value-object';
 import { Guards } from 'core/guards';
+import { isObject } from 'core/util/object';
+import { isDate } from 'util/types';
 
 export type DateValueObjectProps = {
   date: Date;
@@ -18,7 +21,8 @@ export class DateValueObject extends ValueObject<DateValueObjectProps, Date> {
     const { date } = props;
 
     Guards.againstNullOrUndefined(date, 'Date');
-    Guards.isDate(date, 'Date');
+    if (!isDate(date))
+      throw new DomainException('Date is not in a valid format.');
 
     return date;
   }

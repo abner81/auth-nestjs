@@ -3,7 +3,7 @@ import { ValueObject } from 'core/domain/value-object';
 import { Guards } from 'core/guards';
 import { capitalize } from 'core/util/string';
 
-class InvalidNameException extends DomainException {
+export class InvalidNameException extends DomainException {
   constructor() {
     super(`Invalid name. Enter your first and last name.`);
   }

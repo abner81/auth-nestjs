@@ -28,11 +28,6 @@ export class Guards implements IGuards {
       throw new DomainException(`${argumentName} inválido.`);
   }
 
-  static isDate(argument: Date, argumentName: string): GuardResponse {
-    if (argument == null || !isDate(String(argument)))
-      throw new DomainException(`${argumentName} está em um formato inválido.`);
-  }
-
   static ensureMinWords(
     minWords: number,
     argument: string,
