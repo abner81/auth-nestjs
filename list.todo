@@ -1,3 +1,7 @@
+-Criar Event bus e handler
+
+-Service de enviar email
+
 - password/forgot
     .criar jwt com email
     .enivar email para usuario
@@ -9,8 +13,5 @@
 -auth
     .autenticar usuario e gerar accessToken
 
--Criar Event bus e handler
-
--Service de enviar email
 
 -teste e2e

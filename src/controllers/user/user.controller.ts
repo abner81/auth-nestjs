@@ -11,12 +11,7 @@ import { User } from 'domain/user';
 import { CreateUserDTO } from './userDTO';
 import { IUserService } from 'domain/use-cases/user';
 import { USER_SERVICE } from '../../constants';
-import {
-  ImplementationException,
-  InternalException,
-  NotFoundException,
-  OperationConflictException,
-} from 'core/exceptions';
+import { NotFoundException, OperationConflictException } from 'core/exceptions';
 import { Response } from 'express';
 import { DomainException } from 'core/domain/exceptions';
 

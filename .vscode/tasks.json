@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "start:dev",
+      "problemMatcher": [],
+      "label": "Start --Dev",
+      "detail": "nest start --watch"
+    },
+    {
+      "type": "npm",
+      "script": "test:watch",
+      "problemMatcher": [],
+      "label": "Test --Watch",
+      "detail": "run test in watch mode"
+    }
+  ]
+}

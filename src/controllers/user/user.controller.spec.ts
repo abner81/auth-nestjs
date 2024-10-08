@@ -5,15 +5,25 @@ import { User } from 'domain/user';
 import { CreateUserDTO } from './userDTO';
 import { DomainException } from 'core/domain/exceptions';
 import { USER_SERVICE } from '../../constants';
+import { Response } from 'express';
 
 describe('User Controller', () => {
   let userController: UserController;
   let userService: UserService;
+  let res: any;
 
   const dto: CreateUserDTO = {
     email: 'mock@gmail.com',
     name: 'john doe',
     password: 'mypassword',
+  };
+
+  const mockResponse = () => {
+    const res: any = {};
+    res.status = jest.fn().mockReturnValue(res);
+    res.json = jest.fn().mockReturnValue(res);
+    res.send = jest.fn().mockReturnValue(res);
+    return res;
   };
 
   beforeEach(async () => {
@@ -29,6 +39,7 @@ describe('User Controller', () => {
 
     userController = module.get<UserController>(UserController);
     userService = module.get<UserService>(USER_SERVICE);
+    res = mockResponse(); // Mock do response
   });
 
   it('should be defined', () => {
@@ -36,35 +47,26 @@ describe('User Controller', () => {
     expect(userService).toBeDefined();
   });
 
-  it('should return User entity on success', async () => {
-    const spy = jest.spyOn(userService, 'create');
-    const result = await userController.create(dto);
-
-    expect(spy).toHaveBeenCalled();
-    expect(result).toBeUndefined();
-  });
-
-  it('should throw error if UserService return error', async () => {
-    jest.spyOn(userService, 'create').mockImplementation(async () => {
-      throw new DomainException('error_message');
-    });
-
-    await expect(userController.create(dto)).rejects.toThrow(DomainException);
-    await expect(userController.create(dto)).rejects.toThrow('error_message');
-  });
-
-  it('should call User.create() with dto', async () => {
-    const spy = jest.spyOn(User, 'create');
-    await userController.create(dto);
-    expect(spy).toHaveBeenCalledWith(dto);
-  });
-
-  it('should call UserService.create() with User Entity', async () => {
+  it('should return User entity on success and return status 201', async () => {
     const user = User.create(dto);
-    jest.spyOn(User, 'create').mockImplementation(() => user);
-    const spy = jest.spyOn(userService, 'create');
+    const service = jest.spyOn(userService, 'create');
+    const userCreate = jest.spyOn(User, 'create');
+    userCreate.mockImplementation(() => user);
+    await userController.create(dto, res);
 
-    await userController.create(dto);
-    expect(spy).toHaveBeenCalledWith(user);
+    expect(service).toHaveBeenCalledWith(user);
+    expect(userCreate).toHaveBeenCalledWith(dto);
+    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.send).toHaveBeenCalled();
+  });
+
+  it('should throw error if UserService return status 400', async () => {
+    const errorMessage = 'error_message';
+    jest.spyOn(userService, 'create').mockImplementation(() => {
+      throw new DomainException(errorMessage);
+    });
+    await userController.create(dto, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith(errorMessage);
   });
 });

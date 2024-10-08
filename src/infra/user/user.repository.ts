@@ -13,16 +13,13 @@ export class UserRepository implements IUserRepository {
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
   ) {}
+
   async exists(email: Email): Promise<boolean> {
     const user = await this.userRepo.findOne({ where: { email: email.value } });
-    console.log(user);
-
     return !!user;
   }
 
   async create(_user: User): Promise<void> {
-    console.log(_user);
-
     const newUser = this.userRepo.create(_user.export());
     await this.userRepo.save(newUser);
   }
