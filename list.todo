@@ -1,0 +1,16 @@
+- password/forgot
+    .criar jwt com email
+    .enivar email para usuario
+
+-password/reset
+    .apos link enviado, receber jwt e validar
+    .trocar senha do usuario
+
+-auth
+    .autenticar usuario e gerar accessToken
+
+-Criar Event bus e handler
+
+-Service de enviar email
+
+-teste e2e
