@@ -7,6 +7,7 @@ import {
   Name,
   NameProps,
 } from 'domain/shared/value-objects';
+import * as bcrypt from 'bcrypt';
 
 export type UserProps = EmailProps &
   EntityIdProps &
@@ -44,6 +45,11 @@ export class User extends Entity<UserProps, UserState> {
 
   private set password(value: Password | null) {
     this.state.password = value;
+  }
+
+  public async hashPassword(): Promise<void> {
+    const hash = await bcrypt.hash(this.password.value, 10);
+    this.password = new Password({ password: hash });
   }
 
   public hidePassword() {
