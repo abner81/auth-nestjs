@@ -11,6 +11,7 @@ module.exports = {
         '^core/(.*)$': '<rootDir>/src/core/$1',
         '^infra/(.*)$': '<rootDir>/src/infra/$1',
         '^event-handler/(.*)$': '<rootDir>/src/event-handler/$1',
+        '^__mocks__/(.*)$': '<rootDir>/src/__mocks__/$1',
     },
     testRegex: '.*\\.spec\\.ts$',
     transform: {
