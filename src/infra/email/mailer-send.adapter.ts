@@ -10,26 +10,25 @@ import 'dotenv/config';
 @Injectable()
 export class MailerSendAdapter implements IEmailPort {
   async send<D extends DataContent>(props: EmailPortParams<D>): Promise<void> {
-    const { from, html, subject, to, personalization } = props;
+    const { from, html, subject, to, personalization, tags } = props;
 
     const mailerSend = new MailerSend({
       apiKey: process.env.EMAIL_API_TOKEN,
     });
 
-    const emailParams = new EmailParams()
-      //   .setFrom(new Sender(from.email, from.name))
-      .setSubject(subject)
-      .setHtml(html)
-      .setTo(
-        to.map(({ email, name }) => new Recipient(email.value, name.value)),
-      );
+    to.forEach(async (recipient) => {
+      const emailParams = new EmailParams()
+        .setFrom(new Sender(from.email, from.name))
+        .setSubject(subject)
+        .setHtml(html)
+        .setTags(tags)
+        .setTo([new Recipient(recipient.email.value, recipient.name.value)]);
 
-    if (personalization) {
-      emailParams.setPersonalization(personalization);
-    }
+      if (personalization) {
+        emailParams.setPersonalization(personalization);
+      }
 
-    console.log(mailerSend);
-
-    await mailerSend.email.send(emailParams);
+      await mailerSend.email.send(emailParams);
+    });
   }
 }
