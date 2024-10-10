@@ -69,5 +69,11 @@ describe('User Repository', () => {
       expect(typeOrmRepo.create).toHaveBeenCalledWith(userMock.export());
       expect(typeOrmRepo.save).toHaveBeenCalledWith(userEntity);
     });
+
+    it('should call repo.create() and repo.save() with correct values', async () => {
+      await sut.create(userMock);
+      expect(typeOrmRepo.create).toHaveBeenCalledWith(userMock.export());
+      expect(typeOrmRepo.save).toHaveBeenCalledWith(userEntity);
+    });
   });
 });
