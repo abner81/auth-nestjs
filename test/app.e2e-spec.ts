@@ -46,7 +46,7 @@ describe('AppController (e2e)', () => {
     const result = await request(app.getHttpServer()).post('/users').send({
       name: 'john doe',
       email: 'abner81@live.com',
-      password: 'mypassword',
+      password: 'mypassw',
     });
     expect(result.status).toBe(201);
   });
