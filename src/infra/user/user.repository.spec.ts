@@ -5,6 +5,7 @@ import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { Email } from 'domain/user/value-objects';
 import { userMock } from '__mocks__/user/user-mock';
+import { UnexpectedException } from 'core/exceptions';
 
 describe('User Repository', () => {
   let sut: UserRepository;
@@ -70,10 +71,12 @@ describe('User Repository', () => {
       expect(typeOrmRepo.save).toHaveBeenCalledWith(userEntity);
     });
 
-    it('should call repo.create() and repo.save() with correct values', async () => {
-      await sut.create(userMock);
-      expect(typeOrmRepo.create).toHaveBeenCalledWith(userMock.export());
-      expect(typeOrmRepo.save).toHaveBeenCalledWith(userEntity);
+    it('should return error if Repository throw erro', async () => {
+      jest
+        .spyOn(typeOrmRepo, 'save')
+        .mockImplementation(() => Promise.reject(new UnexpectedException()));
+
+      await expect(sut.create(userMock)).rejects.toThrow(UnexpectedException);
     });
   });
 });
