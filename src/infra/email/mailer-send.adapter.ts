@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
-  DataContent,
+  TemplateData,
   EmailPortParams,
   IEmailPort,
 } from 'domain/use-cases/send-email';
@@ -9,7 +9,7 @@ import 'dotenv/config';
 
 @Injectable()
 export class MailerSendAdapter implements IEmailPort {
-  async send<D extends DataContent>(props: EmailPortParams<D>): Promise<void> {
+  async send<D extends TemplateData>(props: EmailPortParams<D>): Promise<void> {
     const { from, html, subject, to, personalization, tags } = props;
 
     const mailerSend = new MailerSend({

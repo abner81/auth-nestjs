@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EMAIL_PORT } from '../../constants';
 import {
-  DataContent,
+  TemplateData,
   EmailParams,
   IEmailPort,
   ISendEmailService,
@@ -16,7 +16,7 @@ export class SendEmailService implements ISendEmailService {
     private readonly emailPort: IEmailPort,
   ) {}
 
-  async send<D extends DataContent>(params: EmailParams<D>): Promise<void> {
+  async send<D extends TemplateData>(params: EmailParams<D>): Promise<void> {
     const from: Sender = {
       email: process.env.EMAIL_FROM,
       name: 'Auth User Project',
