@@ -3,7 +3,6 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { getConnection } from 'typeorm';
 import { UserEntity } from 'infra/user/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -16,8 +15,10 @@ describe('AppController (e2e)', () => {
     const mongoUri = mongoServer.getUri();
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        AppModule,
+      imports: [AppModule],
+    })
+      .overrideModule(TypeOrmModule)
+      .useModule(
         TypeOrmModule.forRootAsync({
           useFactory: async () => ({
             type: 'mongodb',
@@ -26,8 +27,8 @@ describe('AppController (e2e)', () => {
             entities: [UserEntity], // Adicione suas entidades aqui
           }),
         }),
-      ],
-    }).compile();
+      )
+      .compile();
 
     app = moduleFixture.createNestApplication();
     app.enableShutdownHooks();
@@ -41,23 +42,12 @@ describe('AppController (e2e)', () => {
     await app.close();
   });
 
-  it('/ (GET)', () => {
-    request(app.getHttpServer())
-      .post('/users')
-      .send({
-        name: 'john doe',
-        email: 'johndoe2@gmail.com',
-        password: 'mypassword',
-      })
-      .expect(201);
-
-    return request(app.getHttpServer())
-      .post('/users')
-      .send({
-        name: 'john doe',
-        email: 'johndoe2@gmail.com',
-        password: 'mypassword',
-      })
-      .expect(201);
+  it('/ (GET)', async () => {
+    const result = await request(app.getHttpServer()).post('/users').send({
+      name: 'john doe',
+      email: 'abner81@live.com',
+      password: 'mypassword',
+    });
+    expect(result.status).toBe(201);
   });
 });

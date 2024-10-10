@@ -6,6 +6,12 @@ import { CreateUserDTO } from './userDTO';
 import { DomainException } from 'core/domain/exceptions';
 import { USER_SERVICE } from '../../constants';
 import { Response } from 'express';
+import {
+  InternalException,
+  NotFoundException,
+  OperationConflictException,
+} from 'core/exceptions';
+import { ImATeapotException } from '@nestjs/common';
 
 describe('User Controller', () => {
   let userController: UserController;
@@ -67,6 +73,46 @@ describe('User Controller', () => {
     });
     await userController.create(dto, res);
     expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith(errorMessage);
+  });
+
+  it('should throw error if UserService return status 409', async () => {
+    const errorMessage = 'error_message';
+    jest.spyOn(userService, 'create').mockImplementation(() => {
+      throw new OperationConflictException(errorMessage);
+    });
+    await userController.create(dto, res);
+    expect(res.status).toHaveBeenCalledWith(409);
+    expect(res.json).toHaveBeenCalledWith(errorMessage);
+  });
+
+  it('should throw error if UserService return status 404', async () => {
+    const errorMessage = 'error_message';
+    jest.spyOn(userService, 'create').mockImplementation(() => {
+      throw new NotFoundException(errorMessage);
+    });
+    await userController.create(dto, res);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith(errorMessage);
+  });
+
+  it('should throw error if UserService return status 500', async () => {
+    const errorMessage = 'error_message';
+    jest.spyOn(userService, 'create').mockImplementation(() => {
+      throw new InternalException(errorMessage);
+    });
+    await userController.create(dto, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith(errorMessage);
+  });
+
+  it('should return status 500 if Service throw unknown error', async () => {
+    const errorMessage = 'error_message';
+    jest.spyOn(userService, 'create').mockImplementation(() => {
+      throw new ImATeapotException(errorMessage);
+    });
+    await userController.create(dto, res);
+    expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith(errorMessage);
   });
 });
