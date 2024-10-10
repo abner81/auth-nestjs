@@ -40,7 +40,7 @@ describe('Send Welcome Email Handler', () => {
       EMAIL_TEMPLATES_FOLDER + '/welcome/welcome-user-template.html';
     const personalization = {
       email: userMock.email.value,
-      data: { userName: userMock.name.value },
+      data: { userName: userMock.name.firstName },
     };
 
     const callTo: EmailParams<IWelcomeUserTemplate> = {

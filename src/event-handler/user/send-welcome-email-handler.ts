@@ -32,7 +32,7 @@ export class SendWelcomeEmailHandler implements EventHandler<UserCreatedEvent> {
       to: [{ email: user.email, name: user.name }],
       html: welcomeTemplate,
       personalization: [
-        { email: user.email.value, data: { userName: user.name.value } },
+        { email: user.email.value, data: { userName: user.name.firstName } },
       ],
     });
   }
