@@ -1,5 +1,4 @@
 import { User } from './user';
-import { Password } from './value-objects';
 
 describe('User Entity', () => {
   const props = {
@@ -15,6 +14,7 @@ describe('User Entity', () => {
       name: 'John Doe',
       id: user.id.value,
       createdAt: user.createdAt.value,
+      accessToken: null,
     });
   });
 

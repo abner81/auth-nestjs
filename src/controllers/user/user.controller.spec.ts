@@ -2,16 +2,16 @@ import { UserService } from 'services/user/user.service';
 import { UserController } from './user.controller';
 import { Test, TestingModule } from '@nestjs/testing';
 import { User } from 'domain/user';
-import { CreateUserDTO } from './userDTO';
+import { CreateUserDTO } from './user.DTO';
 import { DomainException } from 'core/domain/exceptions';
 import { USER_SERVICE } from '../../constants';
-import { Response } from 'express';
 import {
   InternalException,
   NotFoundException,
   OperationConflictException,
 } from 'core/exceptions';
 import { ImATeapotException } from '@nestjs/common';
+import { mockResponse } from '__mocks__/http-response-mock';
 
 describe('User Controller', () => {
   let userController: UserController;
@@ -22,14 +22,6 @@ describe('User Controller', () => {
     email: 'mock@gmail.com',
     name: 'john doe',
     password: 'mypassword',
-  };
-
-  const mockResponse = () => {
-    const res: any = {};
-    res.status = jest.fn().mockReturnValue(res);
-    res.json = jest.fn().mockReturnValue(res);
-    res.send = jest.fn().mockReturnValue(res);
-    return res;
   };
 
   beforeEach(async () => {

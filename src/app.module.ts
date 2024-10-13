@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { USER_SERVICE, USER_REPOSITORY } from './constants';
+import { USER_SERVICE, USER_REPOSITORY, LOGIN_SERVICE } from './constants';
 import { UserController } from 'controllers/user/user.controller';
 import { UserRepository } from 'infra/user/user.repository';
 import { UserService } from 'services/user/user.service';
@@ -9,6 +9,8 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EventHandlerModule } from 'event-handler/event-handler.module';
 import * as dotenv from 'dotenv';
 import { EmailModule } from 'src/email.module';
+import { LoginService } from 'services/login/login.service';
+import { AuthModule } from 'src/auth.module';
 
 dotenv.config();
 
@@ -27,14 +29,14 @@ dotenv.config();
     EventEmitterModule.forRoot(),
     EventHandlerModule,
     EmailModule,
+    AuthModule,
   ],
   controllers: [UserController],
   providers: [
     { provide: USER_SERVICE, useClass: UserService },
     { provide: USER_REPOSITORY, useClass: UserRepository },
-    // { provide: SEND_EMAIL_SERVICE, useClass: SendEmailService },
-    // { provide: EMAIL_PORT, useClass: MailerSendAdapter },
+    { provide: LOGIN_SERVICE, useClass: LoginService },
   ],
-  exports: [USER_SERVICE, USER_REPOSITORY],
+  exports: [USER_SERVICE, USER_REPOSITORY, LOGIN_SERVICE],
 })
 export class AppModule {}

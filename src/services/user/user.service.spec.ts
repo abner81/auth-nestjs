@@ -59,7 +59,7 @@ describe('User Service', () => {
     create(user: User): Promise<void> {
       return Promise.resolve();
     }
-    getById(id: EntityId): Promise<User> {
+    findByEmail(email: Email): Promise<User> {
       throw Promise.resolve(user);
     }
   }

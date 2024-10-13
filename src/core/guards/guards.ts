@@ -2,6 +2,7 @@ import { DomainException } from '../domain/exceptions';
 
 import isEmail from 'validator/lib/isEmail';
 import isDate from 'validator/lib/isDate';
+import { isJWT } from 'validator';
 
 export type GuardResponse = Error | void;
 
@@ -39,6 +40,13 @@ export class Guards implements IGuards {
     )
       throw new DomainException(
         `${argumentName} not satisfies a min words [${minWords} min words].`,
+      );
+  }
+
+  static ensureIsJwt(argument: string, argumentName: string): GuardResponse {
+    if (typeof argument !== 'string' || !isJWT(argument))
+      throw new DomainException(
+        `${argumentName} not satisfies a valid JWT Token.`,
       );
   }
 }

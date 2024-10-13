@@ -24,7 +24,10 @@ export class UserRepository implements IUserRepository {
     await this.userRepo.save(newUser);
   }
 
-  getById(id: EntityId): Promise<User> {
-    return Promise.resolve({} as User);
+  async findByEmail(email: Email): Promise<User> {
+    const rawUser = await this.userRepo.findOne({
+      where: { email: email.value },
+    });
+    return rawUser ? new User({ ...rawUser }) : null;
   }
 }

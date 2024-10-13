@@ -1,6 +1,8 @@
 import { Entity } from 'core/domain/entity';
 import { Email, EmailProps, Password, PasswordProps } from './value-objects';
 import {
+  AccessToken,
+  AccessTokenProps,
   DateValueObject,
   EntityId,
   EntityIdProps,
@@ -12,7 +14,7 @@ import * as bcrypt from 'bcrypt';
 export type UserProps = EmailProps &
   EntityIdProps &
   PasswordProps &
-  NameProps & { createdAt: Date };
+  NameProps & { createdAt: Date; accessToken?: string };
 
 type UserState = {
   email: Email;
@@ -20,6 +22,7 @@ type UserState = {
   id: EntityId;
   password: Password | null;
   name: Name;
+  accessToken: AccessToken | null;
 };
 
 export class User extends Entity<UserProps, UserState> {
@@ -39,6 +42,13 @@ export class User extends Entity<UserProps, UserState> {
     return this.state.name;
   }
 
+  get accessToken(): AccessToken | null {
+    return this.state.accessToken;
+  }
+  public set accessToken(value: AccessToken) {
+    this.state.accessToken = value;
+  }
+
   get password(): Password | null {
     return this.state.password;
   }
@@ -50,6 +60,12 @@ export class User extends Entity<UserProps, UserState> {
   public async hashPassword(): Promise<void> {
     const hash = await bcrypt.hash(this.password.value, 10);
     this.password = new Password({ password: hash });
+  }
+
+  public async comparePassword(toCompare: Password): Promise<boolean> {
+    if (this.password.isHashed)
+      return await bcrypt.compare(toCompare.value, this.password.value);
+    else return this.password.equals(toCompare);
   }
 
   public hidePassword() {
@@ -69,8 +85,11 @@ export class User extends Entity<UserProps, UserState> {
     const createdAt = new DateValueObject({ date: props.createdAt });
     const password = new Password(props);
     const name = new Name(props);
+    const accessToken = props.accessToken
+      ? new AccessToken({ accessToken: props.accessToken })
+      : null;
 
-    return { email, id, createdAt, password, name };
+    return { email, id, createdAt, password, name, accessToken };
   }
 
   export(): Required<UserProps> {
@@ -80,6 +99,7 @@ export class User extends Entity<UserProps, UserState> {
       ...this.state.id.export(),
       ...this.state.password.export(),
       ...this.state.name.export(),
+      accessToken: this.state.accessToken?.value ?? null,
     };
   }
 }

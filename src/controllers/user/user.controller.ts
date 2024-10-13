@@ -8,7 +8,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { User } from 'domain/user';
-import { CreateUserDTO } from './userDTO';
+import { CreateUserDTO } from './user.DTO';
 import { IUserService } from 'domain/use-cases/user';
 import { USER_SERVICE } from '../../constants';
 import { NotFoundException, OperationConflictException } from 'core/exceptions';
