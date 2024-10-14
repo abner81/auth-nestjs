@@ -8,14 +8,21 @@ import {
 import { Response } from 'express';
 
 export const ParseControllerError = (error: Exception, response: Response) => {
+  const makeResponse = (status: number) => {
+    return response.status(status).json({
+      error: error.message,
+      type: error.name,
+    });
+  };
+
   if (error instanceof OperationConflictException)
-    return response.status(HttpStatus.CONFLICT).json(error.message);
+    return makeResponse(HttpStatus.CONFLICT);
 
   if (error instanceof NotFoundException)
-    return response.status(HttpStatus.NOT_FOUND).json(error.message);
+    return makeResponse(HttpStatus.NOT_FOUND);
 
   if (error instanceof DomainException)
-    return response.status(HttpStatus.BAD_REQUEST).json(error.message);
+    return makeResponse(HttpStatus.BAD_REQUEST);
 
-  return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json(error.message);
+  return makeResponse(HttpStatus.INTERNAL_SERVER_ERROR);
 };

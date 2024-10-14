@@ -23,9 +23,6 @@ export class LoginService implements ILoginService {
     if (!isValidPassword) throw new UnauthorizedException('Senha inválida.');
 
     const accessToken = await this.authService.signInJWT(user);
-    //last login add property
-    return Promise.resolve({
-      accessToken: new AccessToken({ accessToken: 'access_token' }),
-    });
+    return { accessToken };
   }
 }

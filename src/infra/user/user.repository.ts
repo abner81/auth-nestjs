@@ -28,6 +28,6 @@ export class UserRepository implements IUserRepository {
     const rawUser = await this.userRepo.findOne({
       where: { email: email.value },
     });
-    return rawUser ? new User({ ...rawUser }) : null;
+    return rawUser ? new User({ id: rawUser.id, ...rawUser }) : null;
   }
 }

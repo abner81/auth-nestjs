@@ -13,6 +13,6 @@ import 'dotenv/config';
     }),
   ],
   providers: [{ provide: AUTH_SERVICE, useClass: AuthService }],
-  exports: [AuthService],
+  exports: [AUTH_SERVICE],
 })
 export class AuthModule {}

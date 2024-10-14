@@ -11,6 +11,7 @@ import * as dotenv from 'dotenv';
 import { EmailModule } from 'src/email.module';
 import { LoginService } from 'services/login/login.service';
 import { AuthModule } from 'src/auth.module';
+import { LoginController } from 'controllers/login/login.controller';
 
 dotenv.config();
 
@@ -31,7 +32,7 @@ dotenv.config();
     EmailModule,
     AuthModule,
   ],
-  controllers: [UserController],
+  controllers: [UserController, LoginController],
   providers: [
     { provide: USER_SERVICE, useClass: UserService },
     { provide: USER_REPOSITORY, useClass: UserRepository },

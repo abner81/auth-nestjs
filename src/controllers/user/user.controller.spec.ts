@@ -6,12 +6,14 @@ import { CreateUserDTO } from './user.DTO';
 import { DomainException } from 'core/domain/exceptions';
 import { USER_SERVICE } from '../../constants';
 import {
+  Exception,
   InternalException,
   NotFoundException,
   OperationConflictException,
 } from 'core/exceptions';
 import { ImATeapotException } from '@nestjs/common';
 import { mockResponse } from '__mocks__/http-response-mock';
+import * as ParseError from 'core/util/controller/parse-controller-error';
 
 describe('User Controller', () => {
   let userController: UserController;
@@ -37,8 +39,21 @@ describe('User Controller', () => {
 
     userController = module.get<UserController>(UserController);
     userService = module.get<UserService>(USER_SERVICE);
-    res = mockResponse(); // Mock do response
+    res = mockResponse();
+    jest.clearAllMocks();
   });
+
+  const mockServiceReturnTo = (error: Exception) => {
+    jest.spyOn(userService, 'create').mockImplementation(() => {
+      throw error;
+    });
+  };
+
+  const testControllerThrowReturn = async (error: Exception) => {
+    const spy = jest.spyOn(ParseError, 'ParseControllerError');
+    await userController.create(dto, res);
+    expect(spy).toHaveBeenCalledWith(error, res);
+  };
 
   it('should be defined', () => {
     expect(userController).toBeDefined();
@@ -59,52 +74,32 @@ describe('User Controller', () => {
   });
 
   it('should throw error if UserService return status 400', async () => {
-    const errorMessage = 'error_message';
-    jest.spyOn(userService, 'create').mockImplementation(() => {
-      throw new DomainException(errorMessage);
-    });
-    await userController.create(dto, res);
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith(errorMessage);
+    const error = new DomainException('errorMessage');
+    mockServiceReturnTo(error);
+    testControllerThrowReturn(error);
   });
 
   it('should throw error if UserService return status 409', async () => {
-    const errorMessage = 'error_message';
-    jest.spyOn(userService, 'create').mockImplementation(() => {
-      throw new OperationConflictException(errorMessage);
-    });
-    await userController.create(dto, res);
-    expect(res.status).toHaveBeenCalledWith(409);
-    expect(res.json).toHaveBeenCalledWith(errorMessage);
+    const error = new OperationConflictException('errorMessage');
+    mockServiceReturnTo(error);
+    testControllerThrowReturn(error);
   });
 
   it('should throw error if UserService return status 404', async () => {
-    const errorMessage = 'error_message';
-    jest.spyOn(userService, 'create').mockImplementation(() => {
-      throw new NotFoundException(errorMessage);
-    });
-    await userController.create(dto, res);
-    expect(res.status).toHaveBeenCalledWith(404);
-    expect(res.json).toHaveBeenCalledWith(errorMessage);
+    const error = new NotFoundException('errorMessage');
+    mockServiceReturnTo(error);
+    testControllerThrowReturn(error);
   });
 
   it('should throw error if UserService return status 500', async () => {
-    const errorMessage = 'error_message';
-    jest.spyOn(userService, 'create').mockImplementation(() => {
-      throw new InternalException(errorMessage);
-    });
-    await userController.create(dto, res);
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith(errorMessage);
+    const error = new InternalException('errorMessage');
+    mockServiceReturnTo(error);
+    testControllerThrowReturn(error);
   });
 
   it('should return status 500 if Service throw unknown error', async () => {
-    const errorMessage = 'error_message';
-    jest.spyOn(userService, 'create').mockImplementation(() => {
-      throw new ImATeapotException(errorMessage);
-    });
-    await userController.create(dto, res);
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith(errorMessage);
+    const error = new ImATeapotException('errorMessage');
+    mockServiceReturnTo(error);
+    testControllerThrowReturn(error);
   });
 });
