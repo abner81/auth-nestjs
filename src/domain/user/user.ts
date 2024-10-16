@@ -2,7 +2,6 @@ import { Entity } from 'core/domain/entity';
 import { Email, EmailProps, Password, PasswordProps } from './value-objects';
 import {
   AccessToken,
-  AccessTokenProps,
   DateValueObject,
   EntityId,
   EntityIdProps,
@@ -10,6 +9,7 @@ import {
   NameProps,
 } from 'domain/shared/value-objects';
 import * as bcrypt from 'bcrypt';
+import { Exception, NotFoundException } from 'core/exceptions';
 
 export type UserProps = EmailProps &
   EntityIdProps &
@@ -24,6 +24,12 @@ type UserState = {
   name: Name;
   accessToken: AccessToken | null;
 };
+
+export class UserNotFoundException extends NotFoundException {
+  constructor() {
+    super('Usuário não encontrado.');
+  }
+}
 
 export class User extends Entity<UserProps, UserState> {
   get email() {

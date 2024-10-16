@@ -1,8 +1,15 @@
 import { DomainException } from 'core/domain/exceptions';
 import { ValueObject } from 'core/domain/value-object';
+import { UnauthorizedException } from 'core/exceptions';
 import { Guards } from 'core/guards';
 
 export type PasswordProps = { password: string };
+
+export class IncorrectPasswordException extends UnauthorizedException {
+  constructor() {
+    super('Senha inválida.');
+  }
+}
 
 export class Password extends ValueObject<PasswordProps, string> {
   public static minLength = 10;
