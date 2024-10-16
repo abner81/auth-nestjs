@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { USER_REPOSITORY, AUTH_SERVICE } from 'src/constants';
-import { NotFoundException, UnauthorizedException } from 'core/exceptions';
 import { ILoginService, IParams, IResponse } from 'domain/use-cases/login';
 import { IUserRepository } from 'domain/use-cases/user';
 import { IAuthService } from 'domain/use-cases/auth';
