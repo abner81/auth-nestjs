@@ -12,13 +12,14 @@ import { EmailModule } from 'src/email.module';
 import { EventHandlerModule } from 'event-handler/event-handler.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { UserEntity } from 'infra/user/user.entity';
+import 'dotenv/config';
 
 describe('App Module', () => {
   let module: TestingModule;
 
   beforeEach(async () => {
     module = await Test.createTestingModule({ imports: [AppModule] })
-      .overrideProvider(TypeOrmModule) // Mockando a conexão TypeORM
+      .overrideProvider(TypeOrmModule)
       .useValue({
         initialize: jest.fn().mockResolvedValue({}),
         destroy: jest.fn().mockResolvedValue({}),
