@@ -12,7 +12,7 @@ export class IncorrectPasswordException extends UnauthorizedException {
 }
 
 export class Password extends ValueObject<PasswordProps, string> {
-  public static minLength = 10;
+  public static minLength = 8;
 
   get value(): string {
     return this.state;

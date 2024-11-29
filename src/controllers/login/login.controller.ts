@@ -33,6 +33,8 @@ export class LoginController {
 
       return res.status(HttpStatus.OK).json(accessToken.export());
     } catch (error) {
+      console.log(error);
+
       return ParseControllerError(error, res);
     }
   }
