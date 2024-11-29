@@ -22,6 +22,8 @@ export class LoginController {
   @Post()
   async create(@Body() dto: LoginDTO, @Res() res: Response) {
     try {
+      console.log(dto);
+
       const email = new Email({ email: dto.email });
       const password = new Password({ password: dto.password });
       const { accessToken } = await this.loginService.execute({
