@@ -1,1 +1,1 @@
-web: npm run start:prod
+web: pnpm install && npm run start:prod
