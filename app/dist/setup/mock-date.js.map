@@ -1,0 +1,1 @@
+{"version":3,"file":"mock-date.js","sourceRoot":"","sources":["../../src/setup/mock-date.ts"],"names":[],"mappings":"AAAA,MAAM,QAAQ,GAAG,IAAI,IAAI,CAAC,sBAAsB,CAAC,CAAC;AAElD,IAAI;KACD,KAAK,CAAC,MAAM,EAAE,MAAM,CAAC;KACrB,kBAAkB,CAAC,GAAG,EAAE,CAAC,QAA2B,CAAC,CAAC"}
