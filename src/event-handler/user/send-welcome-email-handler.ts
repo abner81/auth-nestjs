@@ -24,16 +24,19 @@ export class SendWelcomeEmailHandler implements EventHandler<UserCreatedEvent> {
       'welcome-user-template.html',
     );
 
-    const welcomeTemplate = getTemplate(templatePath);
-
-    await this.emailService.send<IWelcomeUserTemplate>({
-      tags: ['welcome-email'],
-      subject: 'Seja Bem-vindo',
-      to: [{ email: user.email, name: user.name }],
-      html: welcomeTemplate,
-      personalization: [
-        { email: user.email.value, data: { userName: user.name.firstName } },
-      ],
-    });
+    try {
+      const welcomeTemplate = getTemplate(templatePath);
+      await this.emailService.send<IWelcomeUserTemplate>({
+        tags: ['welcome-email'],
+        subject: 'Seja Bem-vindo',
+        to: [{ email: user.email, name: user.name }],
+        html: welcomeTemplate,
+        personalization: [
+          { email: user.email.value, data: { userName: user.name.firstName } },
+        ],
+      });
+    } catch (error) {
+      console.log('erro ao enviar email');
+    }
   }
 }
