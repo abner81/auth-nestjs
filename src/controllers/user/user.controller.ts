@@ -26,9 +26,13 @@ export class UserController {
   async create(@Body() dto: CreateUserDTO, @Res() res: Response) {
     try {
       const user = User.create(dto);
+      console.log(dto);
+      console.log(user);
+
       await this.userService.create(user);
       return res.status(HttpStatus.CREATED).send();
     } catch (error) {
+      console.log(error);
       return ParseControllerError(error, res);
     }
   }

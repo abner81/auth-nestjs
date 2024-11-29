@@ -4,6 +4,7 @@ import {
   Exception,
   NotFoundException,
   OperationConflictException,
+  UnauthorizedException,
 } from 'core/exceptions';
 import { Response } from 'express';
 
@@ -23,6 +24,9 @@ export const ParseControllerError = (error: Exception, response: Response) => {
 
   if (error instanceof DomainException)
     return makeResponse(HttpStatus.BAD_REQUEST);
+
+  if (error instanceof UnauthorizedException)
+    return makeResponse(HttpStatus.UNAUTHORIZED);
 
   return makeResponse(HttpStatus.INTERNAL_SERVER_ERROR);
 };
