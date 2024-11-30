@@ -89,6 +89,7 @@ export class User extends Entity<UserProps, UserState> {
     const email = new Email(props);
     const id = new EntityId(props);
     const createdAt = new DateValueObject({ date: props.createdAt });
+
     const password = new Password(props);
     const name = new Name(props);
     const accessToken = props.accessToken

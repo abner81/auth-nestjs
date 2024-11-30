@@ -1,1 +1,0 @@
-{"version":3,"file":"event-handler.module.js","sourceRoot":"","sources":["../../src/event-handler/event-handler.module.ts"],"names":[],"mappings":";;;;AAAA,2CAAwC;AACxC,iCAA6D;AAC7D,kDAA8C;AAMvC,IAAM,kBAAkB,GAAxB,MAAM,kBAAkB;CAAG,CAAA;AAArB,gDAAkB;6BAAlB,kBAAkB;IAJ9B,IAAA,eAAM,EAAC;QACN,OAAO,EAAE,CAAC,0BAAW,CAAC;QACtB,SAAS,EAAE,CAAC,8BAAuB,CAAC;KACrC,CAAC;GACW,kBAAkB,CAAG"}

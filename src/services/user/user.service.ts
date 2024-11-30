@@ -22,7 +22,5 @@ export class UserService implements IUserService {
     await user.hashPassword();
     this.userRepository.create(user);
     console.log('criado');
-
-    // this.eventEmitter.emit(UserCreatedEvent.name, new UserCreatedEvent(user));
   }
 }
